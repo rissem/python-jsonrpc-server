@@ -24,7 +24,7 @@ class LanguageServerWebSocketHandler(websocket.WebSocketHandler):
 
         # Create an instance of the language server
         proc = process.Subprocess(
-            ['pyls', '-v'],
+            ['pylsp', '-v'],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE
         )
@@ -46,6 +46,7 @@ class LanguageServerWebSocketHandler(websocket.WebSocketHandler):
 
     def on_message(self, message):
         """Forward client->server messages to the endpoint."""
+        print(message)
         self.writer.write(json.loads(message))
 
     def check_origin(self, origin):
@@ -56,5 +57,6 @@ if __name__ == "__main__":
     app = web.Application([
         (r"/python", LanguageServerWebSocketHandler),
     ])
-    app.listen(3000, address='127.0.0.1')
+    print("APP LISTENING ON PORT 4000")
+    app.listen(4000, address='0.0.0.0')
     ioloop.IOLoop.current().start()
